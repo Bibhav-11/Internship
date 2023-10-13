@@ -12,7 +12,7 @@ The ERP project was designed to demonstrate my understanding of OOP principles a
 
 - **Project Overview**: The ERP system is a comprehensive software solution that integrates various business processes and functions, including inventory management, human resources, finance, and more.
 
-- **Technologies Used**: The project was implemented using [list the technologies, programming languages, or frameworks used].
+- **Technologies Used**: The project was implemented using C# .Net Console Application.
 
 - **Key Features**:
 
