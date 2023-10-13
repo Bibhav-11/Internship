@@ -1,0 +1,6 @@
+The four basic properties of Object Oriented Programming are:
+1. Abstraction: Modeling the relevant attributes and interaction of entities as classes to define an abstraction representation of a system.
+2. Encapsulation: Hiding the internal state and functionality of an object and only allowing access through a public set of functions.
+3. Inheritance: Ability to create new abstractions based on the existing abstractions.
+4. Polymorphism: Ability to implement inherited properties or methods in different ways across multiple abstractions.
+
