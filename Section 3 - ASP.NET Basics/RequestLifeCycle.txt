@@ -1,0 +1,322 @@
+ASP.NET MVC Request Life Cycle
+
+1 Http Request from the browser
+2 ApplicationStart method is invoked in Global.asax file.
+3 Routing - Route table
+4 MVC Handler - handles every MVC requests
+
+During MVC handling, following processes are done:
+
+Creation of Controller
+IControllerFactory.CreateController creates an instance of the controller.
+
+Creation of TempDataProvider
+
+Action method Invocation
+Controller.CreateActionInvoker is responsible to invoke action method
+
+Authentication filter
+If authentication filter is successful, it moves to next step. Otherwise it jumps to the Contoller dispose step.
+
+Authorization filter
+Same with authentication, if Authorization filter is true, it moves to next step. Otherwise, it jumps to Controller dispose step.
+
+Model Binder
+It takes out data from the HTTP request and binds it into parameters of action methods.
+
+Action and action filter
+
+Execute result and execute filter
+
+Controller dispose
+
+Then the HTTP response is sent to the browser.
+
+
+//FROM THE MICROSOFT PDF
+
+The lifecycle of every ASP.NET MVC application, begins from receiving the HTTP request from the client to sending the HTTP response back to the client.
+
+1. HTTP Request
+
+2. Application_Start (in Global.asax.cs)
+    It performs tasks such as:
+        Common tasks such as register routes, bundles, and filters.
+        Advanced tasks such as set custom controller factory.
+
+3. HttpApplication.Init 
+    Override to subscribe to HttpApplication events.
+
+4. IHttpModule.Init
+
+
+//Routing
+5. HttpApplication.PostResolveRequestCache
+                    UrlRoutingModule.PostResolveRequestCache
+
+                        Match request to defined route
+                                    |
+                                    |
+                                    |
+                                    |
+                                    V
+                    Retrieve MvcHandler as the HttpHandler
+                              for the request
+                    (stored at HttpApplication.Context.Handler)
+                                    |
+                                    |
+                                    |
+                                    |
+                                    V
+                        Store the encapsulated route data
+                (at HttpApplication.Context.Request.RequestContext)
+
+
+//MVC Handler
+HttpApplication.BeginProcessRequest
+
+------
+
+HttpApplication.EndProcessRequest
+
+
+//MVC Handler executes the controller action as:
+
+//Controller
+6. IControllerFactory.CreateController
+Called by the MvcHandler to create the named controller. By default, the DefaultControllerFactory is used. To register a custom IControllerFactory, user ControllerBuilder.Current.SetDefaultControllerFactory in Application_Start (in Global.asax.cs file)
+
+7. <Named>Controller.ctor
+
+8. Controller.BeginExecute
+Override to perform processing before anything is done on the controller.
+
+9. Controller.Initialize
+Override to perform custom initialization before ControllerBase.Initialize sets Controller.ControllerContext with the encapsulated route data.
+
+10. Controller.BeginExecuteCore
+
+11. Controller.CreateTempDataProvider
+Override to use a custom TempDataProvider. SessionStateTempDataProvider is used by default.
+
+12. Controller.CreateActionInvoker
+Override to use a custom action invoker. AsyncControllerActionInvoker is used by default.
+
+
+//Authentication
+13. Invoke Authentication filters(IAuthenticationFilter)
+
+Is AuthenticationChallengeContext.Result == null false? Then invoke authentication challenges(IAuthenticationFilter) and directly execute result. AND GO TO STEP 19.
+
+Is AuthenticationChallengeContext.Result == null true? 
+Then invoke IAuthorizationFilter
+
+
+//Authorizatoin
+14. Invoke Authorization filters(IAuthorizationFilter)
+
+Is AuthorizationContext.Result == null false? Then invoke authentication challenges(IAuthenticationFilter) and directly execute result. AND GO TO STEP 19.
+
+Is AuthorizationContext.Result == null true?
+Then go to next step 15.
+
+15. Perform model binding on parameters.
+
+16. Invoke action with action filters (IActionFilter).
+
+17. Invoke Authentication challenges (IAuthenticationFilter).
+
+18. Execute result with result filters. (IResultFilter)
+
+19. Controller.Dispose
+
+HttpApplication.EndProcessRequest
+HttpResponse to the browser
+
+
+
+//Invoke Authentication filters (IAuthenticationFilter)
+
+                    Start
+                      |
+                      V
+            Controller.OnAuthentication  
+                      |
+                      V
+    If(AuthenticationContext.Result == null)                    
+                      |
+                      | (True)  --------(false)-----------------|
+        V                                                       | 
+    <IAuthenticationFilter1>.OnAuthentication                   |
+                      |                                         |
+                      V                                         |
+    If(AuthenticationContext.Result == null)                    |
+                      |                                         |
+                      | (True)  -----(false)--------------------|
+                      V                                         |
+    <IAuthenticationFilter2>.OnAuthentication                   |
+                      |                                         |
+                      V                                         |
+    If(AuthenticationContext.Result == null)                    |
+                      |                                         |
+                      | (True)  ------(false)-------------------|
+                      V                                         |
+                                                                |
+                     ---                                        |
+                     ---                                        |
+                                                                |
+                      |                                         |
+                      |                                         |
+                      V                                         |                                            
+                     End  <-------------------------------------|
+
+
+Use IAuthenticationFilter to authenticate a user action toward the intended resources. Authentication filters execute in order until one of the filters return a non-null result.
+
+AuthenticationContext.Result gets or sets the error result, which indicates that authentication was attempted and failed.
+When AuthenticationContext.Result is null, it typically indicates that there hasn't been any explicit outcome set for the authentication context yet.
+
+
+//Invoke Authorization filters (IAuthorizationFilter)
+
+                    Start
+                      |
+                      V
+            Controller.OnAuthorization  
+                      |
+                      V
+       If(AuthorizationContext.Result == null)                    
+                      |
+                      | (True)  --------(false)-----------------|
+        V                                                       | 
+     <IAuthorizationFilter1>.OnAuthentication                   |
+                      |                                         |
+                      V                                         |
+     If(AuthorizationContext.Result == null)                    |
+                      |                                         |
+                      | (True)  -----(false)--------------------|
+                      V                                         |
+     <IAuthorizationFilter2>.OnAuthentication                   |
+                      |                                         |
+                      V                                         |
+     If(AuthorizationContext.Result == null)                    |
+                      |                                         |
+                      | (True)  ------(false)-------------------|
+                      V                                         |
+                                                                |
+                     ---                                        |
+                     ---                                        |
+                                                                |
+                      |                                         |
+                      |                                         |
+                      V                                         |                                            
+                     End  <-------------------------------------|
+
+
+Use IAuthorizationFilter to authenticate a user action toward the intended resources. Authorization filters execute in order until one of the filters return a non-null result.
+
+AuthorizationContext.Result gets or sets the error result, which indicates that authentication was attempted and failed.
+When AuthorizationContext.Result is null, it typically indicates that there hasn't been any explicit outcome set for the authentication context yet.
+
+
+
+//Authentication challenges
+
+Invoke authentication challenges (IAuthenticationFilter)
+
+                    Start
+                      |
+                      |
+                      V
+        Controller.OnAuthenticationChallenge
+                      |
+                      |
+                      V
+<IAuthenticationFilter1>.OnAuthenticationChallenge
+                      |
+                      |
+                      V  
+<IAuthenticationFilter2>.OnAuthenticationChallenge
+                      |
+                      |
+                      V 
+                     ...
+                      |
+                      |
+                      V 
+                     End
+
+Authentication Challenges are invoked whenever authentication or authorization filters return a result to indicate failure. 
+They are also invoked after the action method executes in case the authentication scheme requires it, such as for server authentication to the client. 
+Use OnAuthenticationChallenge to create the ActionResult you tend to send to the client when authentication challenges occur.
+When authentication challenges are invoked, all registered IAuthenticationFilter contribute to the result.
+
+
+
+//Execute action method with action filters (IActionFilter)
+
+HttpApplication.BeginProcessRequest
+
+Controller.OnActionExecuting
+Controller implements IActionFilter(by inheriting ActionFilterAttribute). OnActionExecuting methods are executed in order before the action method itself.
+
+<ActionFilter1>.OnActionExecuting
+<ActionFilter2>.OnActionExecuting
+            ----
+            ----
+
+<Named>Controller.<ActionAsync>
+Asynchronous action methods(modified with async keyword and returns Task<T>) are executed in HttpApplication.BeginProcessRequest.
+
+
+HttpApplication.EndProcessRequest
+
+Controller.EndExecute
+Called in HttpApplication.EndProcessRequest to end the controller execution. For asynchronous action methods, this portion of the pipeline may be invoked in a different worker itself.
+
+Controller.EndExecuteCore
+
+<Named>Controller.<Action>
+Synchronous action methods(not modified with the async method) are executed in the HttpApplication.EndProcessRequest.
+
+             ---
+             ---
+<ActionFilter2>.OnActionExecuted
+<ActionFilter1>.OnActionExecuted
+OnActionExecuted methods are executed in reverse order after the action method itself.
+
+
+
+//Execute results with result filters (IResultFilter)
+
+
+Controller.OnResultExecuting
+Controller implements IResultFilter(by inheriting ActionFilterAttribute). OnResultExecuting methods are executed in order before the result is executed.
+
+<ResultFilter1>.OnResultExecuting
+<ResultFilter2>.OnResultExecuting
+            ----
+            ----
+
+
+Invoke action results
+(ActionResult.ExecteResult)
+    |                   |
+    |                   |
+    |                   |
+    V                   V
+View,PartialView      Other ActionResult Types
+Find view from view    Write to HTTP response
+engines(Razor view)
+ Render View
+
+
+After authentication challenges are executed as a result of failed authen or failed authorization, the result is executed immediately without any result filters.
+
+
+
+             ---
+             ---
+<ResultFilter2>.OnResultExecuted
+<ResultFilter1>.OnResultExecuted
+OnResultExecuted methods are executed in reverse order after the result is executed.

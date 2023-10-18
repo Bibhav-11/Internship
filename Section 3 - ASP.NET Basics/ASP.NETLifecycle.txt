@@ -1,0 +1,74 @@
+Life cycle of ASP.NET
+ASP.NET has some specific steps that to be carried out for an application.
+These steps are called life cycle.
+
+ASP.NET lifecycle is divided into two groups:
+
+1. Application Life cycle
+2. Page Life cycle
+
+APPLICATION LIFE CYCLE
+Application life cycle starts when the user makes the request.
+These request involves several stages and the stages are:
+1. Application start
+2. Object Creation
+3. HTTP Application
+4. Dispose 
+5. Application End
+
+Application start 
+Whenever a user requests an application for accessing a web server, the request is checked and the request for accessing it is provided. 
+
+Object Creation
+Helps in holding all the information about the current request, cookie and browser information. It also holds HTTP context, HTTP request and HTTP response by the browser.
+
+HTTP Application
+It holds back all the subsequent information sent back to the user by the web server.
+
+Dispose
+Helps to relesase unmanaged resources. It is called before the application is deployed.
+
+Application End
+Helps to unload the memory of the application. Unloading memory means cleaning up the unwanted files of the application.
+
+PAGE LIFE CYCLE
+Page Life cycle includes initialization, restoring and execution. 
+When an ASP.NET page is called, it goes through some phases before the response is sent to the user.
+The phases involved in the page life cycle are:
+
+1. Page Request 
+2. Page Start
+3. Page Initialization
+4. Page Load
+5. Validation
+6. Event handling
+7. Rendering
+8. Unload
+
+Page Request
+When the user requests the page, the server checks the request, compiles the page and responds to the user.
+If the page is requested several times, then the cache will the check the request if the output exists or not and after that it will send the request back to the user.
+
+Page Start
+It holds two objects: request and response.
+The request holds all the information which was sent when the page was requested and the response holds all the information sent back to the user. 
+
+Page Initialization
+During the page initialization phase, all controls are initialized and each controller is provided with a specific id. In this phase, themes are also applied to the application.
+
+Page Load
+The application is provided with some control properties and the information is also sent using view state and control state.
+
+Validation
+When the page execution goes successful, it returns true else it returns false.
+
+Event handling
+This phase is the response to the validation phase.
+In this phase, pages are loaded again and it displays the same information. 
+In order to overcome this, a postback event handler is called. This event helps in checking the credentials of the user.
+
+Rendering
+It occurs when all the response information has been sent back to the user. It also stores all the information that is being sent.
+
+Unload
+Unload helps to clean all the unwanted information fo the application. It also cleans the memory once the output is sent back to the user.

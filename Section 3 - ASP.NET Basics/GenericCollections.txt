@@ -1,0 +1,132 @@
+In ASP.NET, there are several generic collection types provided by the "System.Collection.Generic" namespace.
+These collections are designed to store and manage data of specific types in a type-safe manner.
+
+1. List<T>
+    Class: It is a dynamically resizable array, providing efficient access to elements by index.
+    Use: Suitable for when you need a collection of items with ordered indexing.
+
+2. Dictionary<Tkey, Tvalue>
+    Class: It stores key-value pairs and provides fast look-up by the key. It does not allow duplicate keys.
+    Use: Ideal for building associative arrays, creating lookup tables, or managing data with unique identifiers.
+
+3. HashSet<T>
+    Class: It stores a set of unique elements. It is unordered and optimized for determining membership and performing set operations like union, intersection etc.
+    Use: Useful when you need a collection of unique elements and don't care about the order.
+
+4. Queue<T>
+    Class: Represents a first-in-first-out(FIFO) collection. Elements are removed in the order they are added.
+    Use: Used for building task queues, handling asynchronous operations, or implementing breadth-first traversal.
+
+5. Stack<T>
+    Class: Represents a last-in-first-out(LIFO) collection. Elements are removed in the reverse order from which they were added.
+    Use: Suitable for maintaining history or keeping track of most recently processed items.
+
+6. LinkedList<T>
+    Class: It is a doubly linked list, allowing efficient insertion and deletion at both ends. It can be more efficient that List<T> for certain operations.
+    Use: Useful when you need to frquently insert or remove elements in the middle of a collection.
+
+7. SortedSet<T>
+    Class: It is a sorted collection, which automatically orders its elements. It ensures uniqueness and supports set operations like union and intersection.
+    Use: Useful when you need to maintain elements in sorted order and avoid duplicates.
+
+8. Collection<T>
+    Class: A generic base class for strongly typed collections. It doesn't provide any new functionality but is helpful for deriving custom collections.
+
+9. ReadOnlyCollection<T>
+    Class: Wraps another IList<T> and makes it read-only. It prevents modification to the underlying collection.
+    Use: Useful for exposing collection as read-only to the external code.
+
+10. IList<T>
+    Interface: Represents an index-based collection, allowing access to elements by index, insertion and removal.
+    Use: Useful when you need to represent a collection in generic manner.
+
+11. IReadOnlyList<T>
+    Interface: Readonly version of List<T>. It provides read-only access to elements by index.
+    Use: Ideal when you need to expose a collection as a read-only.
+
+
+//Interfaces
+
+IEnumerable IS THE FUNDAMENTAL INTERFACE IN C# AND .NET, AND IT PLAYS A SIGNIFICANT ROLE IN ITERATING OVER COLLECTIONS OF DATA.
+ALL GENERIC COLLECTIONS IMPLEMENT IEnumerable interface.
+
+ICollection is another important interface in C# .NET. It extends IEnumerable<T> and adds methods for modifying the collection, such as adding, removing and checking for the presence of the items. It provides the following added functionalities:
+    Properties
+        1. Count
+        2. IsReadOnly
+    Methods
+        1. Add
+        2. Clear
+        3. Contains
+        4. CopyTo
+        5. Remove
+
+
+IList supports everthing that ICollection does since it implements ICollection with added functionalities:
+    Properties:
+        1. Item[]
+    Methods
+        1. IndexOf
+        2. Insert
+        3. RemoveAt
+
+
+//IEnumerable vs IQueryable
+IQueryable extends the IEnumerable interface. So, anything you can do with IEnumerable can be done with IQueryable(just like ICollection). 
+
+In EF Core, when you query something with IEnumerable, it returns ALL the records and the filtering is only done in the memory after. So, it does client side filtering and there is no database interaction directly. (LINQ To Objects)
+Whereas if you query something with IQueryable, it returns only the filtered records. Filtering is done in the SQL itself. (LINQ To SQL Entities). It does server side filtering and there is database interaction.
+
+
+//IEnumerable vs IList vs ICollection
+Inheritance/Implementation
+            IEnumerable
+                 |
+                 |
+                 V
+            ICollection
+                 |
+                 |
+                 V
+               IList
+
+IEnumerable: Basic features to iterate through the list of items/objects.
+ICollection: Implements IEnumerable and added features to add/remove items to the list of items/objects.
+IList: Implements ICollection and added features to Add/Remove items at specific index to the list of items/objects.
+
+
+In Case of Web API
+
+1. Use IEnumerable when you need to retrive and iterate through a collection of data.
+Typically with the GetAll HTTP method.
+
+2. Use IQueryable when you need to support query composition and deferred execution.
+   It's suitable for scenarios where you want to build complex queries on the data source.
+   Provides efficient querying in databases like Entity Framework.
+    Example would be GetFilteredItems:
+        public IQueryable<Item> GetFilteredItems(string keyword)
+    {
+        // Return an IQueryable for query composition.
+        return dataContext.Items.Where(item => item.Name.Contains(keyword));
+    }
+
+3. Use IList when you need to modify the collection of items in memory.
+   Represents a list with methods for adding, removing, and modifying elements.
+   Suitable for scenarios where you need to perform in-memory operations on the data.
+
+4. Use ICollection when you need to modify a collection of items in memory.
+
+IList allows you to access an element via an index whereas ICollection doesn't.
+
+IEnumerable doesn't have methods like Add, Remove etc.
+ICollection doesn't have properties like Insert, RemoveAt.
+
+USE IEnumerable UNLESS THERE IS A NEED FOR SPECIFIC INTERFACE.
+
+List<T>: This collection implements IList<T> and does not provide deferred execution for LINQ methods.
+IEnumerable<T> (when working with LINQ): Provides deferred execution.
+Dictionary<TKey, TValue>: Does not provide deferred execution; it's not directly related to LINQ.
+HashSet<T>: Generally does not provide deferred execution for LINQ methods.
+Array: Implements IEnumerable<T> and provides deferred execution when used with LINQ.
+
+Configuration Data: IDictionary can be used to store configuration settings, making it easy to access configuration parameters in your application.

@@ -1,0 +1,54 @@
+﻿@page
+@model EnterpriseResourcePlanning.Pages.HR.IndexModel
+@{
+}
+
+<div class="p-5">
+
+<div class="row mb-3">
+    <div class="col-6">
+        <h1>Employee List</h1>
+    </div>
+    <div class="col-6 text-end">
+        <a asp-page="Create" class="btn btn-primary">Add Employee</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model.Employees)
+        {
+            <tr>
+                <td>@employee.EmployeeId</td>
+                <td>@employee.FirstName @employee.LastName</td>
+                <td>@employee.Email</td>
+                <td>@employee.Department?.Name</td>
+                <td>@employee.JobTitle?.JobTitleName</td>
+                 <td>
+                     <a asp-page="Edit" asp-route-id="@employee.EmployeeId" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                     </a>
+                     <a asp-page="Delete" asp-route-id="@employee.EmployeeId">
+                        <i class="bi bi-trash-fill"></i>
+                     </a>
+                 </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+</div>
+
+

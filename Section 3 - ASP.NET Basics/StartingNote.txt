@@ -1,0 +1,43 @@
+This is a quick starting point on how I would like to implement Enterprise Resource Planning System using ASP.NET Razor pages.
+
+//Modules
+Starting with modules, I only want to keep 4 modules to keep it simple:
+1. HR Module
+2. Finance Module
+3. Sales Module
+4. Project Module
+
+//Models
+Each module is going to have their corresponding models which I am initially planning as:
+
+1. HR Module
+    Models:
+        a. Employee 
+        b. Department
+        c. Job Title
+        e. Payroll
+
+2. Finance Module
+    Models:
+        a. FinanceTransaction
+        b. Account
+        c. Budget
+        d. Invoice
+        e. Expense
+
+3. Sales Module
+    Models:
+        a. Customer
+        b. Product
+        c. Order
+        d. SalesInvoice
+        e. SalesPerson
+
+4. Project Module
+    Models:
+        a. Project
+        b. Task
+        c. Resource
+        d. Project Budget
+        e. TimeSheet
+

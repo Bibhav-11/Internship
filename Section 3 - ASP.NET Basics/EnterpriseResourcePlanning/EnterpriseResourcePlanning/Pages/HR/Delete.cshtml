@@ -1,0 +1,23 @@
+﻿@page
+@model EnterpriseResourcePlanning.Pages.HR.DeleteModel
+@{
+}
+
+<h1>Delete Employee</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h3>Delete Confirmation</h3>
+        <p>Are you sure you want to delete this employee?</p>
+
+        <p><strong>Name:</strong> @Model.Employee?.FirstName @Model.Employee?.LastName</p>
+        <p><strong>Employee ID:</strong> @Model.Employee?.EmployeeId</p>
+        <p><strong>Department:</strong> @Model.Employee?.Department?.Name</p>
+        <p><strong>Job Title:</strong> @Model.Employee?.JobTitle?.JobTitleName</p>
+
+        <form method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+﻿@page
+@model EnterpriseResourcePlanning.Pages.HR.CreateModel
+@{
+}
+
+<form method="post">
+    <h1 class="mb-4">Add An Employee</h1>
+    <div class="mb-2">
+        <label asp-for="Employee.FirstName">First Name</label>
+        <input asp-for="Employee.FirstName" class="form-control" />
+        <span class="text-danger" asp-validation-for="Employee.FirstName"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Employee.LastName">Last Name</label>
+        <input asp-for="Employee.LastName" class="form-control" />
+        <span class="text-danger" asp-validation-for="Employee.LastName"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Employee.Email">Email</label>
+        <input asp-for="Employee.Email" class="form-control" />
+        <span class="text-danger" asp-validation-for="Employee.Email"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Employee.Department">Department</label>
+        <input asp-for="Employee.Department" class="form-control" />
+        <span class="text-danger" asp-validation-for="Employee.Department"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Employee.Title">Job Title</label>
+        <input asp-for="Employee.Title" class="form-control" />
+        <span class="text-danger" asp-validation-for="Employee.Title"></span>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary mt-2">Create</button>
+    </div>
+
+
+</form>

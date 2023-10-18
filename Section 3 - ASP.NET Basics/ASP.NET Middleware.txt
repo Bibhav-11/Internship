@@ -1,0 +1,55 @@
+Middleware
+Middleware is software that's assembled into an app pipeline to handle requests and responses. Each component:
+    1. Chooses whether to pass the request to the next component in the pipeline.
+    2. Can perform work before and after the next component in the pipeline.
+
+The ASP.NET Core request pipeline consists of a sequence of request delegates, called one after the other. Each delegate can perform operations before and after the next delegate. Chain multiple request delegates together with Use.
+
+When a delegate doesn't pass a request to the next delegate, it's called short-circuiting the request pipeline.
+
+Run delegates don't receive a next parameter. The first Run delegate is always terminal and terminates the pipeline. 
+
+//MIDDLEWARE ORDER
+Exception Handler
+HSTS
+HttpsRedirection
+Static files
+Routing
+CORS
+Authentication
+Authorization
+Custom Middlewares
+Endpoint
+
+The Endpoint middleware executes the filter pipeline for the corresponding app type— MVC or Razor Pages.
+
+MVC filter pipeline: Resource filters, Model Binding, Model Validation, Action Filters, Exception Filters, Result Filters
+Razor pages filter pipeline: Resource filters, Model Binding, Model Validation, Page Filters, User Code
+
+The order that middleware components are added in the Program.cs file defines the order in which the middleware components are invoked on requests and the reverse order for the response. The order is critical for security, performance, and functionality.
+
+1. Exception/error handling
+When the app runs in the Development environment:
+Developer Exception Page Middleware (UseDeveloperExceptionPage) reports app runtime errors.
+Database Error Page Middleware (UseDatabaseErrorPage) reports database runtime errors.
+When the app runs in the Production environment:
+Exception Handler Middleware (UseExceptionHandler) catches exceptions thrown in the following middlewares.
+
+2. HTTP Strict Transport Security Protocol (HSTS) Middleware (UseHsts) adds the Strict-Transport-Security header.
+
+3. HTTPS Redirection Middleware (UseHttpsRedirection) redirects HTTP requests to HTTPS.
+
+4. Static File Middleware (UseStaticFiles) returns static files and short-circuits further request processing.
+
+5. Cookie Policy Middleware (UseCookiePolicy) conforms the app to the EU General Data Protection Regulation (GDPR) regulations.
+
+5. Routing Middleware (UseRouting) to route requests.
+
+6. Authentication Middleware (UseAuthentication) attempts to authenticate the user before they're allowed access to secure resources.
+
+7. Authorization Middleware (UseAuthorization) authorizes a user to access secure resources.
+
+8. Session Middleware (UseSession) establishes and maintains session state. If the app uses session state, call Session Middleware after Cookie Policy Middleware and before MVC Middleware.
+
+10. Endpoint Routing Middleware (UseEndpoints with MapRazorPages) to add Razor Pages endpoints to the request pipeline
+
