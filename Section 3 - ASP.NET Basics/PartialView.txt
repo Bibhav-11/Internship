@@ -1,0 +1,62 @@
+A partial view is a Razor markup file (.cshtml) without a @page directive that renders HTML output within another markup file's rendered output.
+
+//The @page directive is a special directive used in Razor Pages in ASP.NET Core. It specifies the URL at which the Razor Page should be accessible.
+
+WHEN TO USE PARTIAL VIEWS?
+Partial views are an effective way to:
+
+Break up large markup files into smaller components.
+In a large, complex markup file composed of several logical pieces, there's an advantage to working with each piece isolated into a partial view. The code in the markup file is manageable because the markup only contains the overall page structure and references to partial views.
+
+Reduce the duplication of common markup content across markup files.
+When the same markup elements are used across markup files, a partial view removes the duplication of markup content into one partial view file. When the markup is changed in the partial view, it updates the rendered output of the markup files that use the partial view.
+
+
+//Declare partial views
+A partial view is a .cshtml markup file without an @page directive maintained within the Views folder (MVC) or Pages folder (Razor Pages).
+
+In ASP.NET Core MVC, a controller's ViewResult is capable of returning either a view or a partial view.
+In Razor Pages, a PageModel can return a partial view represented as a PartialViewResult object.
+
+
+//Reference a partial view
+
+
+//Use a partial view in Razor Pages PageModel
+public IActionResult OnGetPartial() =>
+    Partial("_AuthorPartialRP");
+
+
+//Use a partial view in Markup file
+We can use a partial view in Markup file by using a Partial Tag Helper.
+<partial name="_PartialName" />
+
+
+Razor Pages
+<partial name="~/Pages/Folder/_PartialName.cshtml" />
+<partial name="/Pages/Folder/_PartialName.cshtml" />
+
+MVC
+<partial name="~/Views/Folder/_PartialName.cshtml" />
+<partial name="/Views/Folder/_PartialName.cshtml" />
+
+Relative path
+<partial name="../Account/_PartialName.cshtml" />
+
+
+//Partial View Discovery
+When a partial view is referenced by name without a file extension, the following locations are searched in the stated order:
+
+Razor Pages
+1. Currently executing page's folder
+2. Directory graph above the page's folder
+3. /Shared
+4. /Pages/Shared
+5. /Views/Shared
+
+MVC
+1. /Areas/<Area-Name>/Views/<Controller-Name>
+2. /Areas/<Area-Name>/Views/Shared
+3. /Views/Shared
+4. /Pages/Shared
+

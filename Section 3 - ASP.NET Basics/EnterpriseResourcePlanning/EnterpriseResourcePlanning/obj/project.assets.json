@@ -2897,11 +2897,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Bibhav\\Desktop\\ASP.NET Basics\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning.csproj",
+      "projectUniqueName": "C:\\Users\\Bibhav\\Desktop\\Internship\\Section 3 - ASP.NET Basics\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning.csproj",
       "projectName": "EnterpriseResourcePlanning",
-      "projectPath": "C:\\Users\\Bibhav\\Desktop\\ASP.NET Basics\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning.csproj",
+      "projectPath": "C:\\Users\\Bibhav\\Desktop\\Internship\\Section 3 - ASP.NET Basics\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning.csproj",
       "packagesPath": "C:\\Users\\Bibhav\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Bibhav\\Desktop\\ASP.NET Basics\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning\\obj\\",
+      "outputPath": "C:\\Users\\Bibhav\\Desktop\\Internship\\Section 3 - ASP.NET Basics\\EnterpriseResourcePlanning\\EnterpriseResourcePlanning\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 23.1\\Components\\Offline Packages"

@@ -1,0 +1,109 @@
+Razor
+Razor is a markup syntax for embedding .NET based code into webpages.
+
+Inline expression
+@somevariable
+
+Multi line expression
+@{
+
+}
+
+Inside a block, you close each statement with a semicolon
+@{
+    var outsideTemp = 79;
+    var weatherMessage = "Hello, it is " + outsideTemp + " degrees.";
+}
+
+Use variables to store values
+@{ var welcomeMessage = "Welcome, new members!"; }
+<p>@welcomeMessage</p>
+
+Enclose string literal with a double quotation
+@{ var myString = "This is a string literal"; }
+
+Code is case-sensitive
+
+Expression encoding
+@("<span>Hello World</span>")
+The preceding code renders the following HTML
+&lt;span&gt;Hello World&lt;/span&gt;
+The HTML is shown in browser as a plain text
+<span>Hello World</span>
+
+
+Conditionals
+@if (value % 2 == 0)
+{
+    <p>The value was even.</p>
+}
+
+@if (value % 2 == 0)
+{
+    <p>The value was even.</p>
+}
+else if (value >= 1337)
+{
+    <p>The value is large.</p>
+}
+else
+{
+    <p>The value is odd and small.</p>
+}
+
+@switch (value)
+{
+    case 1:
+        <p>The value is 1!</p>
+        break;
+    case 1337:
+        <p>Your number is 1337!</p>
+        break;
+    default:
+        <p>Your number wasn't 1 or 1337.</p>
+        break;
+}
+
+
+Loops
+@for (var i = 0; i < people.Length; i++)
+{
+    var person = people[i];
+    <p>Name: @person.Name</p>
+    <p>Age: @person.Age</p>
+}
+
+@foreach (var person in people)
+{
+    <p>Name: @person.Name</p>
+    <p>Age: @person.Age</p>
+}
+
+@{ var i = 0; }
+@while (i < people.Length)
+{
+    var person = people[i];
+    <p>Name: @person.Name</p>
+    <p>Age: @person.Age</p>
+
+    i++;
+}
+
+
+@model
+This scenario applies to only MVC and Razor Pages.
+@model TypeNameOfModel
+
+<div>The Login Email: @Model.Email</div>
+
+
+
+Tag Helpers
+
+Anchor
+    asp-controller
+    asp-action
+    asp-route-{value}
+    asp-route
+    asp-page
+    asp-page-handler

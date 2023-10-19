@@ -3,6 +3,20 @@
 @{
 }
 
-<form method="post">
+<h1 class="mb-4">Form Login</h1>
 
+<form method="post">
+    <div class="mb-4">
+        <label asp-for="Credential.UserName" class="mb-2"></label>
+        <input class="form-control" asp-for="Credential.UserName" />
+        <span class="text-danger" asp-validation-for="Credential.UserName"></span>
+    </div>
+
+    <div class="mb-4">
+        <label asp-for="Credential.Password" class="mb-2"></label>
+        <input class="form-control" asp-for="Credential.Password" />
+        <span class="text-danger" asp-validation-for="Credential.Password"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
